@@ -4,6 +4,7 @@
 from pdfminer.layout import *
 import pdftable
 from htmltext import *
+import os
 import sys
 import math
 import re
@@ -355,6 +356,12 @@ class x86ManParser(object):
 		
 		title = title_parts[0]
 		path = "%s/%s.html" % (self.outputDir, title.replace("/", "_").replace(" ", ""))
+		# there are multiple MOV instructions
+		if os.path.exists(path): 
+			path = path.replace(".", "_1.")
+			if os.path.exists(path): 
+				path = path.replace("_1.", "_2.")
+
 		print("Writing to %s" % path)
 		file_data = self.__output_page(displayable).encode("UTF-8")
 		with open(path, "wb") as fd:
